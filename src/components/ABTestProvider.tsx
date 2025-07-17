@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-type ABTestVariant = 'A' | 'B'
+type ABTestVariant = 'A' | 'B' | 'C'
 
 interface ABTestContextType {
   variant: ABTestVariant
@@ -28,11 +28,12 @@ export const ABTestProvider: React.FC<ABTestProviderProps> = ({ children }) => {
     // Check if variant is stored in localStorage
     const storedVariant = localStorage.getItem('ab-test-variant') as ABTestVariant
     
-    if (storedVariant && (storedVariant === 'A' || storedVariant === 'B')) {
+    if (storedVariant && (storedVariant === 'A' || storedVariant === 'B' || storedVariant === 'C')) {
       setVariant(storedVariant)
     } else {
-      // Randomly assign variant (50/50 split)
-      const randomVariant: ABTestVariant = Math.random() < 0.5 ? 'A' : 'B'
+      // Randomly assign variant (33/33/33 split)
+      const random = Math.random()
+      const randomVariant: ABTestVariant = random < 0.33 ? 'A' : random < 0.66 ? 'B' : 'C'
       setVariant(randomVariant)
       localStorage.setItem('ab-test-variant', randomVariant)
     }
